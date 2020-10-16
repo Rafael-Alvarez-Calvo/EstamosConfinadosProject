@@ -1,13 +1,23 @@
+
+////Capturadores///
+
 let  button= document.querySelector("#button")
-let  form = document.querySelector("#form")
+let texto = document.querySelector("#texto")
 let body = document.querySelector("body")
+let map = document.querySelector("#map")
 
 
+///Informacion Capturada
+let result = {};
 
 
-button.addEventListener("submit",(form) =>{
-    let a = form.value
+let tasaIncidenciaAcumulada
 
+button.addEventListener("click", async() =>{
+    
+    let envio = texto.value;
+    console.log(envio)
+    result = await datos(envio);
 })
 
 async function datos(dt){
@@ -16,6 +26,8 @@ async function datos(dt){
     .then(data => console.log(data)); 
 }
 
-fetch(`https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&q=asdsa`)
-.then(response => response.json())
-.then(data => console.log(data));
+
+console.log(result)
+
+
+
