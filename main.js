@@ -5,12 +5,11 @@ let texto = document.querySelector("#texto")
 let body = document.querySelector("body")
 let map = L.map('map', {});
 let confinamiento = document.querySelector("#confinamiento")
-console.log(confinamiento)
 ///Informacion Capturada
 let result = {};
 let TasaIncidenciaAcumulada
-let City
-let actualCase = 0;
+let City // ciudad
+let actualCase = 0; // casos de hoy
 class Incidencia{
      constructor(city,TIA){
         this.City = city,
@@ -22,22 +21,20 @@ class Incidencia{
                 casos : 500
             },
             {   
-              city : this.City,
-              fecha : moment().subtract(3, 'days').calendar() ,
-              casos : 450
-          },
-          {   
-            city : this.City,
-            fecha : moment().subtract(2, 'days').calendar() ,
-            casos : 508
-        },
-        {   
+                 city : this.City,
+                fecha : moment().subtract(3, 'days').calendar() ,
+                casos : 450
+            },
+            {   
+                city : this.City,
+                fecha : moment().subtract(2, 'days').calendar() ,
+                 casos : 508
+            },
+            {   
           city : this.City,
           fecha : moment().subtract(1, 'days').calendar() ,
           casos : 460
-      },
-
-            
+            },    
         ]
      }
      //Añade los casos actuales a un array de casos por dias
@@ -45,7 +42,7 @@ class Incidencia{
          let a = {city: City,fecha:new date(), caso: actualCase}
          this.casos.push(a)
      }
-
+      // funcion para saber si se esta confinado o no
     confinado(Tia){
       let p = document.createElement("p")
       if(Tia <= 500){
@@ -102,8 +99,6 @@ class Incidencia{
         confinamiento.appendChild(palabraDelSeñor)
       }
     }
-    mapa()
-    Grafico()
 }
 let prueba = new Incidencia("Madrid",600)
 
@@ -113,6 +108,8 @@ button.addEventListener("click", async() =>{
     let envio = texto.value;
     console.log(envio)
     result = await datos(envio);
+    prueba.PushNcasos("Madrid",560).confinado(560)
+    console.log(prueba)
 })
 async function datos(dt){
     console.log(dt);
