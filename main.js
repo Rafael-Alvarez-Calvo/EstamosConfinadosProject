@@ -1,3 +1,79 @@
+////Capturadores///
+
+let  button= document.querySelector("#button")
+let texto = document.querySelector("#texto")
+let body = document.querySelector("body")
+let map = L.map('map', {});
+
+///Informacion Capturada
+let result = {};
+let TasaIncidenciaAcumulada
+let City
+let actualCase
+class Incidencia{
+     construtor(City,TIA){
+        this.City = City;
+        this.TIA = TIA
+        this.casos =[
+            {   
+                city : this.City,
+                fecha : moment().subtract(1, 'days').calendar() ,
+                casos : 500
+            },
+            
+        ]
+     }
+     //Añade los casos actuales a un array de casos por dias
+    PushNcasos(actualCase) {
+         let a = {fecha:moment().format('MMMM Do YYYY, h:mm:ss a'), caso: actualCase}
+         this.casos.push(a)
+     }
+}
+let prueba = new Incidencia("Madrid",600)
+console.log(prueba.casos)
+//////////////////////////////////////////// FUNCIONES////////////////////////////////////
+button.addEventListener("click", async() =>{
+    
+    let envio = texto.value;
+    console.log(envio)
+    result = await datos(envio);
+})
+async function datos(dt){
+    console.log(dt);
+    fetch("https://apifetcher.herokuapp.com?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters="
+    + JSON.stringify({"municipio_distrito": "Madrid-Moratalaz"})
+    )
+    .then(d => d.json())
+    .then(d => console.log(d))
+}
+
+
+
+////////////////////////// MAPA /////////////////////////////////////////////////////////////
+function mapa() {
+L.tileLayer('https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+    maxZoom: 20
+}).addTo(map);
+var browserLat;
+var browserLong;  
+navigator.geolocation.getCurrentPosition(function(position) {
+browserLat =  position.coords.latitude;
+browserLong = position.coords.longitude;
+marker_actual = L.marker([browserLat,browserLong]).addTo(map);
+marker_actual.bindPopup('<b>Hola </b><br>Tu estas aqui').openPopup();
+map.setView([browserLat,browserLong], 18);  
+// console.log(browserLat);
+// console.log(browserLong);
+ }, 
+function(err) {
+console.error(err);
+});   
+}
+/////// Grafico//////////////////////////////////////////////////////
+function Grafico() {
+  
+
 fetch('https://api.covid19tracking.narrativa.com/api/2020-10-16/country/spain/region/madrid')
 .then(response => response.json())
 .then(data => {
@@ -5,12 +81,12 @@ fetch('https://api.covid19tracking.narrativa.com/api/2020-10-16/country/spain/re
     let open_cases = data.dates["2020-10-16"].countries.Spain.today_open_cases;
 
     let dateString = data.dates["2020-10-16"].countries.Spain.date;
-
+    console.log(dateObj)
     let dateObj = new Date(dateString);
     let momentObj = moment(dateObj);
     let momentString = momentObj.format('DD/MM')
 
-let dataChart = {
+    let dataChart = {
     labels: ['02/10', '03/10', '04/10', '05/10', '06/10', '07/10', '08/10','09/10','10/10','11/10','12/10','13/10','14/10',momentString,'16/10'],
     series: [
 
@@ -117,82 +193,5 @@ let dataChart = {
 
 })
 
-
-
-////Capturadores///
-
-let  button= document.querySelector("#button")
-let texto = document.querySelector("#texto")
-let body = document.querySelector("body")
-
-
-///Informacion Capturada
-let result = {};
-let TasaIncidenciaAcumulada
-let City
-let actualCase
-class Incidencia{
-     construtor(City,TIA){
-        this.City = City;
-        this.TIA = TIA
-        this.casos =[
-            {   
-                City : City,
-                fecha : moment().subtract(1, 'days').calendar() ,
-                caso : 500
-            }
-        ]
-     }
-     //Añade los casos actuales a un array de casos por dias
-    PushNcasos(actualCase) {
-         let a = {fecha:moment().format('MMMM Do YYYY, h:mm:ss a'), caso: actualCase}
-         this.casos.push(a)
-     }
 }
-
-let Prueba = new Incidencia("Madrid",600)
-
-console.log(Prueba)
-//////////////////////////////////////////// FUNCIONES////////////////////////////////////
-
-button.addEventListener("click", async() =>{
-    
-    let envio = texto.value;
-    console.log(envio)
-    result = await datos(envio);
-})
-
-async function datos(dt){
-    console.log(dt);
-    fetch("https://apifetcher.herokuapp.com?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters="
-    + JSON.stringify({"municipio_distrito": "Madrid-Moratalaz"})
-    )
-    .then(d => d.json())
-    .then(d => console.log(d))
-}
-
-
-console.log(result)
-
-////////////////////////// MAPA /////////////////////////////////////////////////////////////
-let map = L.map('map', {});
-L.tileLayer('https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
-    maxZoom: 20
-}).addTo(map);
-var browserLat;
-var browserLong;  
-navigator.geolocation.getCurrentPosition(function(position) {
-browserLat =  position.coords.latitude;
-browserLong = position.coords.longitude;
-marker_actual = L.marker([browserLat,browserLong]).addTo(map);
-marker_actual.bindPopup('<b>Hola </b><br>Tu estas aqui').openPopup();
-map.setView([browserLat,browserLong], 18);  
-console.log(browserLat);
-console.log(browserLong); }, 
-function(err) {
-console.error(err);
-});   
-
-
-
+mapa()

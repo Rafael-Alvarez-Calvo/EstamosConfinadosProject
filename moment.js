@@ -5659,7 +5659,7 @@
         MONTH: 'YYYY-MM', // <input type="month" />
     };
 
-<<<<<<< HEAD
+
     //! moment.js locale configuration
 
     hooks.defineLocale('af', {
