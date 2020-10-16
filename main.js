@@ -5,14 +5,37 @@
 let  button= document.querySelector("#button")
 let texto = document.querySelector("#texto")
 let body = document.querySelector("body")
-
+let  map = document.querySelector("#map")
 
 
 ///Informacion Capturada
 let result = {};
+let TasaIncidenciaAcumulada
+let City
+let actualCase
+class Incidencia{
+     construtor(City,TIA){
+        this.City = City;
+        this.TIA = TIA
+        this.casos =[
+            {   
+                City : City,
+                fecha : moment().subtract(1, 'days').calendar() ,
+                caso : 500
+            }
+        ]
+     }
+     //Añade los casos actuales a un array de casos por dias
+    PushNcasos(actualCase) {
+         let a = {fecha:moment().format('MMMM Do YYYY, h:mm:ss a'), caso: actualCase}
+         this.casos.push(a)
+     }
+}
 
+let Prueba = new Incidencia("Madrid",600)
 
-let tasaIncidenciaAcumulada
+console.log(Prueba)
+//////////////////////////////////////////// FUNCIONES////////////////////////////////////
 
 button.addEventListener("click", async() =>{
     
