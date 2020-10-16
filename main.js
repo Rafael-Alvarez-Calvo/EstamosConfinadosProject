@@ -4,33 +4,109 @@ let  button= document.querySelector("#button")
 let texto = document.querySelector("#texto")
 let body = document.querySelector("body")
 let map = L.map('map', {});
-
+let confinamiento = document.querySelector("#confinamiento")
+console.log(confinamiento)
 ///Informacion Capturada
 let result = {};
 let TasaIncidenciaAcumulada
 let City
-let actualCase
+let actualCase = 0;
 class Incidencia{
-     construtor(City,TIA){
-        this.City = City;
-        this.TIA = TIA
+     constructor(city,TIA){
+        this.City = city,
+        this.Tia = TIA,
         this.casos =[
             {   
                 city : this.City,
-                fecha : moment().subtract(1, 'days').calendar() ,
+                fecha : moment().subtract(4, 'days').calendar() ,
                 casos : 500
             },
+            {   
+              city : this.City,
+              fecha : moment().subtract(3, 'days').calendar() ,
+              casos : 450
+          },
+          {   
+            city : this.City,
+            fecha : moment().subtract(2, 'days').calendar() ,
+            casos : 508
+        },
+        {   
+          city : this.City,
+          fecha : moment().subtract(1, 'days').calendar() ,
+          casos : 460
+      },
+
             
         ]
      }
      //Añade los casos actuales a un array de casos por dias
     PushNcasos(actualCase) {
-         let a = {fecha:moment().format('MMMM Do YYYY, h:mm:ss a'), caso: actualCase}
+         let a = {city: City,fecha:new date(), caso: actualCase}
          this.casos.push(a)
      }
+
+    confinado(Tia){
+      let p = document.createElement("p")
+      if(Tia <= 500){
+        p.innerText = "SI"
+        
+        let  parrafo1 = document.createElement("section")
+        let  parrafo2 = document.createElement("section")
+        let  p1       = document.createElement("p")
+        let  p2       = document.createElement("p")
+        let  p3       = document.createElement("p")
+        let  ul3      = document.createElement("ul")
+        let  ul3p     = document.createElement("p")
+        let  ul3li1   = document.createElement("li")
+        let  ul3li2   = document.createElement("li")
+        let  ul3li3   = document.createElement("li")
+        let  ul3li4   = document.createElement("li")
+        let  ul3li5   = document.createElement("li")
+        let  ul3li6   = document.createElement("li")
+        let  ul3li7   = document.createElement("li")
+        let  ul3li8   = document.createElement("li")
+        let  ul3li9   = document.createElement("li")
+        let  ul3li10  = document.createElement("li")
+        let  ul3li11  = document.createElement("li")
+        let  ul3li12  = document.createElement("li")
+        
+        p1.innerText("¿Que puedo hacer estando confinado?")
+        p2.innerText("Limitación de la libertad de circulación de las personas")
+        p3.innerText("La circulación de las personas en tránsito a través de los ámbitos territoriales que constituyen el ámbito de aplicación  no estara sometida a las restricciones establecidas en el apartado anterior.")
+        ul3p.innerText("Se restringe la entrada y salida de personas de los municipios recogidos en el artículo 2 a aquellos desplazamientos adecuadamente justificados que se produzcan por alguno de los siguientes motivos:")
+        ul3li1.innerText("Asistencia a centros, servicios y establecimientos sanitarios")
+        ul3li2.innerText("Cumplimiento de obligaciones laborales, profesionales, empresariales, institucionales o legales")
+        ul3li3.innerText("Asistencia a centros universitarios, docentes y educativos, incluidas las escuelas de educación infantil.")
+        ul3li4.innerText("Retorno al lugar de residencia habitual.")
+        ul3li5.innerText("Asistencia y cuidado a mayores, menores, dependientes, personas con discapacidad o personas especialmente vulnerables.")
+        ul3li6.innerText("Desplazamiento a entidades financieras y de seguros que no puedan aplazarse.")
+        ul3li7.innerText("Actuaciones requeridas o urgentes ante los órganos públicos, judiciales o notariales.")
+        ul3li8.innerText("Renovaciones de permisos y documentación oficial, así como otros trámites administrativos inaplazables.") 
+        ul3li9.innerText("Realización de exámenes o pruebas oficiales inaplazables.") 
+        ul3li10.innerText("Por causa de fuerza mayor o situación de necesidad." )
+        ul3li11.innerText("Cualquier otra actividad de análoga naturaleza, debidamente acreditada." )
+        ul3li12.innerText( "Quedarse en casa es mas barato. Por la HordAAAAAAAAAAAAAA")
+        confinamiento.appendChild(p)
+        confinamiento.appendChild(parrafo1)
+        confinamiento.appendChild(parrafo2)
+        parrafo1.appendChild(p2)
+        parrafo1.appendChild(ul3)
+        ul3.appendChild(ul3li1);ul3.appendChild(ul3li2);ul3.appendChild(ul3li3);ul3.appendChild(ul3li4);ul3.appendChild(ul3li5);ul3.appendChild(ul3li6);ul3.appendChild(ul3li7);ul3.appendChild(ul3li8);ul3.appendChild(ul3li9);ul3.appendChild(ul3li10);ul3.appendChild(ul3li11);ul3.appendChild(ul3li12)
+        parrafo2.appendChild(p3)
+      }else{
+        p.innerText = "NO"
+        let palabraDelSeñor = createElement("p")
+        palabraDelSeñor.innerText("Asique divierte pero con precaucion")
+        confinamiento.appendChild(p)
+        confinamiento.appendChild(palabraDelSeñor)
+      }
+    }
+    mapa()
+    Grafico()
 }
 let prueba = new Incidencia("Madrid",600)
-console.log(prueba.casos)
+
 //////////////////////////////////////////// FUNCIONES////////////////////////////////////
 button.addEventListener("click", async() =>{
     
@@ -46,8 +122,6 @@ async function datos(dt){
     .then(d => d.json())
     .then(d => console.log(d))
 }
-
-
 
 ////////////////////////// MAPA /////////////////////////////////////////////////////////////
 function mapa() {
@@ -194,4 +268,4 @@ fetch('https://api.covid19tracking.narrativa.com/api/2020-10-16/country/spain/re
 })
 
 }
-mapa()
+
