@@ -5,7 +5,6 @@
 let  button= document.querySelector("#button")
 let texto = document.querySelector("#texto")
 let body = document.querySelector("body")
-let  map = document.querySelector("#map")
 
 
 ///Informacion Capturada
@@ -45,9 +44,12 @@ button.addEventListener("click", async() =>{
 })
 
 async function datos(dt){
-    fetch(`https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&q=${dt}`)
-    .then(response => response.json())
-    .then(data => console.log(data)); 
+    console.log(dt);
+    fetch("https://apifetcher.herokuapp.com?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters="
+    + JSON.stringify({"municipio_distrito": "Madrid-Moratalaz"})
+    )
+    .then(d => d.json())
+    .then(d => console.log(d))
 }
 
 
