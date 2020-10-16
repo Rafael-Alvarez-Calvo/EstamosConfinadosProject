@@ -1,0 +1,20 @@
+body{
+    background-color: #222;
+    padding: 20px;
+    font-family:arial;
+    color: tomato;
+  }
+  
+  .ct-chart{
+    border-radius: 6px;
+    background-color: cyan;
+    padding-top: 20px;
+    
+  }
+
+.ct-series-a>.ct-line{
+
+    stroke: black ;
+}
+  
+  
