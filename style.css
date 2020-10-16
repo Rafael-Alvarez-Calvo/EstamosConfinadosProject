@@ -1,3 +1,4 @@
+
 body{
     background-color: #222;
     padding: 20px;
@@ -16,5 +17,10 @@ body{
 
     stroke: black ;
 }
+#map{ 
+    width:100vw;
+    height: 400px;
+ }
   
   
+
