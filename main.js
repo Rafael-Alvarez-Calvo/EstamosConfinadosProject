@@ -149,7 +149,7 @@ button.addEventListener("click", async () => {
 async function datos(/*envio*/) {
  // console.log(dt);
   let resultado = await fetch(
-    "https://apifetcher.herokuapp.com?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
+    "https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
   JSON.stringify({ municipio_distrito: "Madrid-Moratalaz" /*envio*/ })
 
   )
