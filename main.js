@@ -127,9 +127,11 @@ let prueba = new Incidencia("Madrid",600);
 
 //////////////////////////////////////////// FUNCIONES////////////////////////////////////
 button.addEventListener("click", async () => {
+
+
   let envio = texto.value;
 
-  let apiResponse = await datos(envio);
+  let apiResponse = await datos(envio); //Espera el envio de los datos de los datos api (fetch)
   console.log(apiResponse);
   prueba.Tia = apiResponse.result.records[0].casos_confirmados_activos_ultimos_14dias === null ? 600 : apiResponse.result.records[0].casos_confirmados_activos_ultimos_14dias
   apiResponse.result.records.map((record) => {
@@ -139,6 +141,7 @@ button.addEventListener("click", async () => {
       fecha: record.fecha_informe,
     }); 
      Grafico()
+
 
   });
   prueba.confinado(prueba.Tia)
@@ -150,7 +153,8 @@ async function datos(/*envio*/) {
  // console.log(dt);
   let resultado = await fetch(
     "https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
-  JSON.stringify({ municipio_distrito: "Madrid-Moratalaz" /*envio*/ })
+
+      JSON.stringify({ municipio_distrito: "Madrid-" + Coordenadas() })
 
   )
     .then((d) => d.json())
@@ -165,7 +169,7 @@ function mapa() {
     {
       attribution:
         '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
-      maxZoom: 20,
+      maxZoom: 20
     }
   ).addTo(map);
   var browserLat;
@@ -177,14 +181,33 @@ function mapa() {
       marker_actual = L.marker([browserLat, browserLong]).addTo(map);
       marker_actual.bindPopup("<b>Hola </b><br>Tu estas aqui").openPopup();
       map.setView([browserLat, browserLong], 18);
-      // console.log(browserLat);
-      // console.log(browserLong);
+      console.log(browserLat);
+      console.log(browserLong);
+      Coordenadas(browserLat,browserLong);
     },
     function (err) {
       console.error(err);
     }
   );
 }
+
+function Coordenadas (browserLat,browserLong){
+  fetch (`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${browserLat}&lon=${browserLong}`)
+
+  .then ((response)=> response.json())
+  .then ((data)=>{
+    
+
+    console.log(data);
+    console.log(data.address.city_district);
+  
+    return data.address.city_district
+
+  })
+}
+
+
+
 /////// Grafico//////////////////////////////////////////////////////
 function Grafico() {
 
