@@ -137,18 +137,19 @@ button.addEventListener("click", async () => {
       caso: record.casos_confirmados_activos_ultimos_14dias,
       dia: record.fecha_informe,
     });
+    
   });
 
-  console.log(prueba);
+  console.log(prueba.casos);
 });
-async function datos(dt) {
-  console.log(dt);
+async function datos(envio) {
+  
   let resultado = await fetch(
     "https://apifetcher.herokuapp.com?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
-      JSON.stringify({ municipio_distrito: "Madrid-Moratalaz" })
+      JSON.stringify({ municipio_distrito: envio})
   )
     .then((d) => d.json())
-    .then((d) => d);
+    .then((d) => d.envio);
   return resultado;
 }
 
@@ -186,11 +187,9 @@ function Grafico() {
   )
     .then((response) => response.json())
     .then((data) => {
-      let open_cases =
-        data.dates["2020-10-16"].countries.Spain.today_open_cases;
+      let open_cases = data.dates["2020-10-16"].countries.Spain.today_open_cases;
 
       let dateString = data.dates["2020-10-16"].countries.Spain.date;
-      console.log(dateObj);
       let dateObj = new Date(dateString);
       let momentObj = moment(dateObj);
       let momentString = momentObj.format("DD/MM");
@@ -314,3 +313,4 @@ function Grafico() {
     });
 }
 mapa();
+Grafico();
