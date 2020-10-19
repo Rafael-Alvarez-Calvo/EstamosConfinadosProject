@@ -17,24 +17,24 @@ class Incidencia {
         {
           city: this.City,
           fecha: moment().subtract(4, "days").calendar(),
-          casos: 500,
+          Ncaso: 100,
         },
         {
           city: this.City,
           fecha: moment().subtract(3, "days").calendar(),
-          casos: 450,
+          Ncaso: 150,
         },
         {
           city: this.City,
           fecha: moment().subtract(2, "days").calendar(),
-          casos: 508,
+          Ncaso: 108,
         },
         {
           city: this.City,
           fecha: moment().subtract(1, "days").calendar(),
-          casos: 460,
+          Ncaso: 160,
         },
-      ]);
+      ])
   }
   //Añade los casos actuales a un array de casos por dias
 
@@ -43,9 +43,9 @@ class Incidencia {
   }
   // funcion para saber si se esta confinado o no
   confinado(Tia) {
-    let p = document.createElement("p");
-    if (Tia >= 500) {
-      p.innerText = "SI";
+    let h1 = document.createElement("h1");
+    if (Tia >= 100 || null) {
+      h1.innerText = "SI";
 
       let parrafo1 = document.createElement("section");
       let parrafo2 = document.createElement("section");
@@ -95,7 +95,7 @@ class Incidencia {
         "Cualquier otra actividad de análoga naturaleza, debidamente acreditada.";
       ul3li12.innerText =
         "Quedarse en casa es mas barato. Por la HordAAAAAAAAAAAAAA";
-      confinamiento.appendChild(p);
+      confinamiento.appendChild(h1);
       confinamiento.appendChild(parrafo1);
       confinamiento.appendChild(parrafo2);
       parrafo1.appendChild(p2);
@@ -122,8 +122,8 @@ class Incidencia {
     }
   }
 }
+let prueba = new Incidencia("Madrid",600);
 
-let prueba = new Incidencia("Madrid", 600);
 
 //////////////////////////////////////////// FUNCIONES////////////////////////////////////
 button.addEventListener("click", async () => {
@@ -131,22 +131,27 @@ button.addEventListener("click", async () => {
 
   let apiResponse = await datos(envio);
   console.log(apiResponse);
+  prueba.Tia = apiResponse.result.records[0].casos_confirmados_activos_ultimos_14dias == null ? 600 : apiResponse.result.records[0].casos_confirmados_activos_ultimos_14dias
   apiResponse.result.records.map((record) => {
     prueba.pushCasos({
       city: record.municipio_distrito,
-      caso: record.casos_confirmados_activos_ultimos_14dias,
-      dia: record.fecha_informe,
-    });
-    
-  });
+      Ncaso: record.casos_confirmados_activos_ultimos_14dias,
+      fecha: record.fecha_informe,
+    }); 
+     Grafico()
 
-  console.log(prueba.casos);
+  });
+  prueba.confinado(prueba.Tia)
+ 
+
+
 });
-async function datos(envio) {
-  
+async function datos(/*envio*/) {
+ // console.log(dt);
   let resultado = await fetch(
     "https://apifetcher.herokuapp.com?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
-      JSON.stringify({ municipio_distrito: envio})
+  JSON.stringify({ municipio_distrito: "Madrid-Moratalaz" /*envio*/ })
+
   )
     .then((d) => d.json())
     .then((d) => d.envio);
@@ -187,34 +192,22 @@ function Grafico() {
   )
     .then((response) => response.json())
     .then((data) => {
-      let open_cases = data.dates["2020-10-16"].countries.Spain.today_open_cases;
 
+      let open_cases =
+        data.dates["2020-10-16"].countries.Spain.today_open_cases;
       let dateString = data.dates["2020-10-16"].countries.Spain.date;
       let dateObj = new Date(dateString);
       let momentObj = moment(dateObj);
       let momentString = momentObj.format("DD/MM");
-
+      
       let dataChart = {
-        labels: [
-          "02/10",
-          "03/10",
-          "04/10",
-          "05/10",
-          "06/10",
-          "07/10",
-          "08/10",
-          "09/10",
-          "10/10",
-          "11/10",
-          "12/10",
-          "13/10",
-          "14/10",
-          momentString,
-          "16/10",
-        ],
-        series: [[0, 3, 5, 8, 10, -20, 0, 3, 5, 8, 10, -20, 0, open_cases, 5]],
+        labels:[],
+        series: [],
       };
-
+      dataChart.series.push(prueba.casos.map((caso)=>caso.Ncaso))
+      dataChart.labels.push(prueba.casos.map((caso) =>caso.fecha))
+      // console.log(prueba.casos)
+      // console.log(dataChart)
       // All The Defaul Options of a line chart:
 
       var options = {
