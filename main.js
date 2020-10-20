@@ -127,13 +127,13 @@ button.addEventListener("click", async () => {
   console.log(apiResponse)
   console.log(prueba.casos)
 });
-async function datos(envio) {
+async function datos() {
  // console.log(dt);
   let resultado = await fetch(
 
     "https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
 
-      JSON.stringify({ municipio_distrito: "Madrid-" +  "Centro"/* Coordenadas()*/})
+      JSON.stringify({ municipio_distrito: "Madrid-" + "centro"/*Coordenadas()*/})
     
   )
     .then(resp => resp.json())
@@ -199,7 +199,7 @@ function Grafico() {
   
   let dataChart = {
     labels: dateString.reverse(),
-    series: [],
+    series: [].reverse(),
   };
   // console.log(dataChart.labels);
   dataChart.series.push(prueba.casos.map((caso) => caso.Ncaso));
