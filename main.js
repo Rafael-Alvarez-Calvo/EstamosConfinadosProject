@@ -117,6 +117,10 @@ async function pintarGrafico() {
       Ncaso: record.casos_confirmados_ultimos_14dias,
       fecha: record.fecha_informe.split("T")[0],
     }); 
+    let coords = localStorage.getItem("distrito")
+      coords = apiResponse.result.records[0].municipio_distrito;
+      localStorage.setItem("distrito",coords)
+     
     
      Grafico()
     
@@ -130,22 +134,18 @@ async function pintarGrafico() {
 
 async function datos() {
  // console.log(dt);
-  let coordenadas = await Coordenadas(browserLat, browserLong);
-  console.log(coordenadas)
-  let resultado = await fetch(
+  let lastfind = localStorage.getItem("distrito")
+  let coordenadas = await Coordenadas(browserLat, browserLong)
+ let resultado
+  coordenadas != lastfind ? resultado = lastfind : resultado = await  fetch(
 
     "https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
-
-
-
-      JSON.stringify({ municipio_distrito: "Madrid-"+ coordenadas})
-
-
-    
+      JSON.stringify({ municipio_distrito: "Madrid-"+ "Centro"/*coordenadas*/})  
   )
     .then(resp => resp.json())
     .then((data) => data)
   console.log(resultado)
+
   return resultado;
 
   
@@ -174,6 +174,7 @@ function mapa() {
     //  console.log(browserLong);
       Coordenadas(browserLat,browserLong);
       pintarGrafico();
+     
     },
     function (err) {
       console.error(err);
@@ -182,7 +183,7 @@ function mapa() {
 }
 
 async function Coordenadas (browserLat,browserLong){
-  console.log(browserLat, browserLong);
+  //console.log(browserLat, browserLong);
   let response = await fetch (`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${browserLat}&lon=${browserLong}`)
   let data = await response.json();
     // console.log(data);
@@ -197,7 +198,7 @@ function Grafico() {
 
   let dateString = prueba.casos.map((caso) => caso.fecha.substring(5,caso.fecha.length)); 
  
-  console.log(dateString)
+  //console.log(dateString)
  
 
   
