@@ -8,18 +8,23 @@ body{
   
   .ct-chart{
     border-radius: 6px;
-    background-color:black;
+    background-color:white;
     padding-top: 20px;
-    
     
   }
 
-.ct-series-a>.ct-line{
+.ct-grid{
+  stroke: grey !important;
+}
+.ct-labels{
+  color: grey !important;
+}
+.ct-series-a .ct-line{
 
-    stroke:white ;
+ stroke:white ;
 }
 #map{ 
-    width:100vw;
+    width:95vw;
     height: 400px;
  }
   
