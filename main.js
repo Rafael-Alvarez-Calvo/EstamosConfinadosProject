@@ -1,6 +1,6 @@
 ////Capturadores///
-let button = document.querySelector("#button");
-let texto = document.querySelector("#texto");
+// let button = document.querySelector("#button");
+// let texto = document.querySelector("#texto");
 let body = document.querySelector("body");
 let map = L.map("map", {});
 let confinamiento = document.querySelector("#confinamiento");
@@ -108,11 +108,7 @@ let prueba = new Incidencia("Madrid",600);
 
 //////////////////////////////////////////// FUNCIONES////////////////////////////////////
 async function pintarGrafico() {
-
-
-  let envio = texto.value;
-
-  let apiResponse = await datos(envio); //Espera el envio de los datos de los datos api (fetch)
+  let apiResponse = await datos(); //Espera el envio de los datos de los datos api (fetch)
   //console.log(apiResponse);
   // console.log(apiResponse.result.records);
   // if (apiResponse.result.records.length)
