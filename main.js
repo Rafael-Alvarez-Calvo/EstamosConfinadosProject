@@ -5,6 +5,8 @@ let body = document.querySelector("body");
 let map = L.map("map", {});
 let confinamiento = document.querySelector("#confinamiento");
 ///Informacion Capturada
+var browserLat;
+var browserLong;
 let result = {};
 let TasaIncidenciaAcumulada;
 let City; // ciudad
@@ -112,6 +114,8 @@ button.addEventListener("click", async () => {
 
   let apiResponse = await datos(envio); //Espera el envio de los datos de los datos api (fetch)
   //console.log(apiResponse);
+  // console.log(apiResponse.result.records);
+  // if (apiResponse.result.records.length)
   prueba.Tia = apiResponse.result.records[0].casos_confirmados_activos_ultimos_14dias === null ? 600 : apiResponse.result.records[0].casos_confirmados_activos_ultimos_14dias
   apiResponse.result.records.map((record) => {
     prueba.pushCasos({
@@ -127,18 +131,23 @@ button.addEventListener("click", async () => {
   console.log(apiResponse)
   console.log(prueba.casos)
 });
-async function datos(envio) {
+async function datos() {
  // console.log(dt);
+  let coordenadas = await Coordenadas(browserLat, browserLong);
+  console.log(coordenadas)
   let resultado = await fetch(
 
     "https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
 
-      JSON.stringify({ municipio_distrito: "Madrid-" +  "Centro"/* Coordenadas()*/})
+      JSON.stringify({ municipio_distrito: "Madrid-"+coordenadas})
+
     
   )
     .then(resp => resp.json())
     .then((data) => data)
+  console.log(resultado)
   return resultado;
+
   
 }
 
@@ -152,8 +161,8 @@ function mapa() {
       maxZoom: 20
     }
   ).addTo(map);
-  var browserLat;
-  var browserLong;
+  
+  
   navigator.geolocation.getCurrentPosition(
     function (position) {
       browserLat = position.coords.latitude;
@@ -161,8 +170,8 @@ function mapa() {
       marker_actual = L.marker([browserLat, browserLong]).addTo(map);
       marker_actual.bindPopup("<b>Hola </b><br>Tu estas aqui").openPopup();
       map.setView([browserLat, browserLong], 18);
-      //console.log(browserLat);
-     // console.log(browserLong);
+    //   console.log(browserLat);
+    //  console.log(browserLong);
       Coordenadas(browserLat,browserLong);
     },
     function (err) {
@@ -171,19 +180,13 @@ function mapa() {
   );
 }
 
-function Coordenadas (browserLat,browserLong){
-  fetch (`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${browserLat}&lon=${browserLong}`)
-
-  .then ((response)=> response.json())
-  .then ((data)=>{
-    
-
-     //console.log(data);
+async function Coordenadas (browserLat,browserLong){
+  console.log(browserLat, browserLong);
+  let response = await fetch (`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${browserLat}&lon=${browserLong}`)
+  let data = await response.json();
+    // console.log(data);
     // console.log(data.address.city_district);
-  
     return data.address.city_district
-
-  })
 }
 
 
