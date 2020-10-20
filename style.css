@@ -8,14 +8,15 @@ body{
   
   .ct-chart{
     border-radius: 6px;
-    background-color: cyan;
+    background-color:black;
     padding-top: 20px;
+    
     
   }
 
 .ct-series-a>.ct-line{
 
-    stroke: black ;
+    stroke:white ;
 }
 #map{ 
     width:100vw;
