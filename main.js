@@ -105,11 +105,16 @@ let prueba = new Incidencia("Madrid",600);
 
 
 //////////////////////////////////////////// FUNCIONES////////////////////////////////////
+const guardar = {
+  set: (key, value) => localStorage[key] = JSON.stringify(value),
+  get: key => JSON.parse(localStorage[key])
+}
 async function pintarGrafico() {
   let apiResponse = await datos(); //Espera el envio de los datos de los datos api (fetch)
   //console.log(apiResponse);
   // console.log(apiResponse.result.records);
   // if (apiResponse.result.records.length)
+  prueba.city = apiResponse.result.records[0].municipio_distrito
   prueba.Tia = apiResponse.result.records[0].casos_confirmados_activos_ultimos_14dias === null ? 600 : apiResponse.result.records[0].casos_confirmados_activos_ultimos_14dias
   apiResponse.result.records.map((record) => {
     prueba.pushCasos({
@@ -117,34 +122,38 @@ async function pintarGrafico() {
       Ncaso: record.casos_confirmados_ultimos_14dias,
       fecha: record.fecha_informe.split("T")[0],
     }); 
-    let coords = localStorage.getItem("distrito")
-      coords = apiResponse.result.records[0].municipio_distrito;
-      localStorage.setItem("distrito",coords)
-     
+    guardar.set("prueba",prueba)
     
      Grafico()
     
   });
+  
   prueba.confinado(prueba.Tia)
-  console.log(apiResponse)
-  console.log(prueba.casos)
+  //console.log(apiResponse)
+  //console.log(prueba.casos)
 
 
 };
 
 async function datos() {
  // console.log(dt);
-  let lastfind = localStorage.getItem("distrito")
+  let lastfind =  localStorage.getItem("prueba")
+  console.log(lastfind)
   let coordenadas = await Coordenadas(browserLat, browserLong)
+  console.log(coordenadas)
  let resultado
-  coordenadas != lastfind ? resultado = lastfind : resultado = await  fetch(
+  guardar.get("prueba") != null ? 
+  coordenadas == lastfind.city ? resultado = lastfind :
+  
+   resultado = await  fetch(
 
     "https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
-      JSON.stringify({ municipio_distrito: "Madrid-"+ "Centro"/*coordenadas*/})  
+      JSON.stringify({ municipio_distrito: "Madrid-"+ "Centro"/*coordenadas*/}) ,
+      console.log("la cagaste")
   )
     .then(resp => resp.json())
-    .then((data) => data)
-  console.log(resultado)
+    .then((data) => data) : resultado = lastfind
+  //console.log(resultado)
 
   return resultado;
 
@@ -188,7 +197,7 @@ async function Coordenadas (browserLat,browserLong){
   let data = await response.json();
     // console.log(data);
     // console.log(data.address.city_district);
-    return data.address.city_district
+    return /* data.address.city_district*/ "Madrid-Centro"
 }
 
 
