@@ -107,7 +107,7 @@ let prueba = new Incidencia("Madrid",600);
 
 
 //////////////////////////////////////////// FUNCIONES////////////////////////////////////
-button.addEventListener("click", async () => {
+async function pintarGrafico() {
 
 
   let envio = texto.value;
@@ -130,7 +130,7 @@ button.addEventListener("click", async () => {
   prueba.confinado(prueba.Tia)
   console.log(apiResponse)
   console.log(prueba.casos)
-});
+};
 async function datos() {
  // console.log(dt);
   let coordenadas = await Coordenadas(browserLat, browserLong);
@@ -139,7 +139,7 @@ async function datos() {
 
     "https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
 
-      JSON.stringify({ municipio_distrito: "Madrid-"+coordenadas})
+      JSON.stringify({ municipio_distrito: "Madrid-" + coordenadas})
 
     
   )
@@ -173,6 +173,7 @@ function mapa() {
     //   console.log(browserLat);
     //  console.log(browserLong);
       Coordenadas(browserLat,browserLong);
+      pintarGrafico();
     },
     function (err) {
       console.error(err);
