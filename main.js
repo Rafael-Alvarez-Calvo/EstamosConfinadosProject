@@ -139,7 +139,7 @@ async function datos() {
 
     "https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
 
-      JSON.stringify({ municipio_distrito: "Madrid-" + coordenadas})
+      JSON.stringify({ municipio_distrito: "Madrid-"+ coordenadas})
 
     
   )
