@@ -103,15 +103,17 @@ class Incidencia {
     }
   }
 }
-// let prueba = new Incidencia("Madrid",600);
+let prueba = new Incidencia("Madrid",600);
 
 
 //////////////////////////////////////////// FUNCIONES////////////////////////////////////
+
 async function pintarGrafico() {
   let apiResponse = await datos(); //Espera el envio de los datos de los datos api (fetch)
-  //console.log(apiResponse);
+  console.log(apiResponse);
   // console.log(apiResponse.result.records);
   // if (apiResponse.result.records.length)
+
   if(apiResponse.datos === "API"){
   prueba.Tia = apiResponse.result.records[0].casos_confirmados_activos_ultimos_14dias === null ? 600 : apiResponse.result.records[0].casos_confirmados_activos_ultimos_14dias
   apiResponse.result.records.map((record) => {
@@ -152,23 +154,27 @@ async function datos() {
   console.log(lastfind)
   let coordenadas = await Coordenadas(browserLat, browserLong)
   console.log(coordenadas)
- let resultado
- let respuesta
+  let resultado
+  let respuesta
   // coordenadas == (lastfind.city == null || undefined) ? "otra cosa" : lastfind.city ? resultado = lastfind :
   if ((lastfind === undefined)  ) {
     respuesta = await  fetch(
       "https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
 
-      JSON.stringify({ municipio_distrito: "Madrid-"+ Coordenadas()})   
+    JSON.stringify({ municipio_distrito: "Madrid-"+ await Coordenadas(browserLat,browserLong)})   
 
     )
     resultado = await respuesta.json()
-     resultado = {datos : "API",...resultado}
+    resultado = {datos : "API",...resultado}
     console.log("la cagaste")
+
   }else{
+
     resultado = lastfind;
     resultado ={datos : "biblioteca",...resultado}
+
   }
+  return await resultado;
 }
    
   //console.log(resultado)
@@ -176,6 +182,7 @@ async function datos() {
 
 
 ////////////////////////// MAPA /////////////////////////////////////////////////////////////
+
 function mapa() {
   L.tileLayer(
     "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
@@ -210,9 +217,8 @@ async function Coordenadas (browserLat,browserLong){
   //console.log(browserLat, browserLong);
   let response = await fetch (`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${browserLat}&lon=${browserLong}`)
   let data = await response.json();
-
-
-    
+    console.log(data);
+    //console.log(data.address.city_district);
     return data.address.city_district
 }
 
@@ -225,15 +231,13 @@ function Grafico() {
  
   //console.log(dateString)
  
-
-  
   let dataChart = {
-    labels: dateString,
-    series: [],
+    labels: dateString.reverse(),
+    series: [prueba.casos.map((caso) => caso.Ncaso).reverse()],
   };
   // console.log(dataChart.labels);
-  dataChart.series.push(prueba.casos.map((caso) => caso.Ncaso));
-  
+  // dataChart.series.unshift(prueba.casos.map((caso) => caso.Ncaso));
+
   // console.log(prueba.casos)
   // console.log(dataChart)
   // All The Defaul Options of a line chart:
