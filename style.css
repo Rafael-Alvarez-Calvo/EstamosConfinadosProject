@@ -4,7 +4,7 @@ body{
     padding: 20px;
     font-family:arial;
     color:rgba(65, 119, 65, 0.575);
-  }
+}
 
 .mainContainer{
   position: flex;
