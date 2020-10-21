@@ -74,7 +74,7 @@ class Incidencia {
       ul3li11.innerText =
         "Cualquier otra actividad de análoga naturaleza, debidamente acreditada.";
       ul3li12.innerText =
-        "Quedarse en casa es mas barato. Por la HordAAAAAAAAAAAAAA";
+        "Quedarse en casa es mas barato.";
       confinamiento.appendChild(h1);
       confinamiento.appendChild(parrafo1);
       confinamiento.appendChild(parrafo2);
@@ -107,11 +107,13 @@ let prueba = new Incidencia("Madrid",600);
 
 
 //////////////////////////////////////////// FUNCIONES////////////////////////////////////
+
 async function pintarGrafico() {
   let apiResponse = await datos(); //Espera el envio de los datos de los datos api (fetch)
-  //console.log(apiResponse);
+  console.log(apiResponse);
   // console.log(apiResponse.result.records);
   // if (apiResponse.result.records.length)
+
   if(apiResponse.datos === "API"){
   prueba.Tia = apiResponse.result.records[0].casos_confirmados_activos_ultimos_14dias === null ? 600 : apiResponse.result.records[0].casos_confirmados_activos_ultimos_14dias
   apiResponse.result.records.map((record) => {
@@ -144,22 +146,21 @@ async function pintarGrafico() {
 
 
 };
-
 async function datos() {
  //console.log(localStorage.getItem("distrito"));
- 
-let lastfind =  JSON.parse(localStorage.getItem("distrito")) === null ? undefined : JSON.parse(localStorage.getItem("distrito"))
-console.log(lastfind)
-let coordenadas = await Coordenadas(browserLat, browserLong)
-console.log(coordenadas)
-let resultado
-let respuesta
-  // coordenadas == (lastfind.city == null || undefined) ? "otra cosa" : lastfind.city ? resultado = lastfind :
-  if (lastfind === undefined) {
+  
+  let lastfind =  JSON.parse(localStorage.getItem("distrito")) === null ? undefined : JSON.parse(localStorage.getItem("distrito"))
 
+  console.log(lastfind)
+  let coordenadas = await Coordenadas(browserLat, browserLong)
+  console.log(coordenadas)
+  let resultado
+  let respuesta
+  // coordenadas == (lastfind.city == null || undefined) ? "otra cosa" : lastfind.city ? resultado = lastfind :
+  if ((lastfind === undefined)  ) {
     respuesta = await  fetch(
       "https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
-       JSON.stringify({ municipio_distrito: "Madrid-"+ "Centro"/*coordenadas*/})   
+    JSON.stringify({ municipio_distrito: "Madrid-"+ await Coordenadas(browserLat,browserLong)})   
     )
     resultado = await respuesta.json()
     resultado = {datos : "API",...resultado}
@@ -171,15 +172,18 @@ let respuesta
     resultado ={datos : "biblioteca",...resultado}
 
   }
-  //console.log(resultado)
-  return resultado;
+  return await resultado;
 }
+   
+  //console.log(resultado)
+
+
 
 ////////////////////////// MAPA /////////////////////////////////////////////////////////////
 
 function mapa() {
   L.tileLayer(
-    "https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png",
+    "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
     {
       attribution:
         '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
@@ -211,9 +215,9 @@ async function Coordenadas (browserLat,browserLong){
   //console.log(browserLat, browserLong);
   let response = await fetch (`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${browserLat}&lon=${browserLong}`)
   let data = await response.json();
-    // console.log(data);
-    // console.log(data.address.city_district);
-    return /* data.address.city_district*/ "Madrid-Centro"
+    console.log(data);
+    //console.log(data.address.city_district);
+    return data.address.city_district
 }
 
 
@@ -227,11 +231,11 @@ function Grafico() {
  
   let dataChart = {
     labels: dateString.reverse(),
-    series: [].reverse(),
+    series: [prueba.casos.map((caso) => caso.Ncaso).reverse()],
   };
   // console.log(dataChart.labels);
-  dataChart.series.push(prueba.casos.map((caso) => caso.Ncaso));
-  
+  // dataChart.series.unshift(prueba.casos.map((caso) => caso.Ncaso));
+
   // console.log(prueba.casos)
   // console.log(dataChart)
   // All The Defaul Options of a line chart:
@@ -332,4 +336,3 @@ function Grafico() {
 // });
 }
 mapa();
-
