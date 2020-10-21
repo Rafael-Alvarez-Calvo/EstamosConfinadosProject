@@ -74,7 +74,7 @@ class Incidencia {
       ul3li11.innerText =
         "Cualquier otra actividad de análoga naturaleza, debidamente acreditada.";
       ul3li12.innerText =
-        "Quedarse en casa es mas barato. Por la HordAAAAAAAAAAAAAA";
+        "Quedarse en casa es mas barato.";
       confinamiento.appendChild(h1);
       confinamiento.appendChild(parrafo1);
       confinamiento.appendChild(parrafo2);
@@ -103,7 +103,7 @@ class Incidencia {
     }
   }
 }
-let prueba = new Incidencia("Madrid",600);
+// let prueba = new Incidencia("Madrid",600);
 
 
 //////////////////////////////////////////// FUNCIONES////////////////////////////////////
@@ -144,7 +144,6 @@ async function pintarGrafico() {
 
 
 };
-
 async function datos() {
  //console.log(localStorage.getItem("distrito"));
  
@@ -158,7 +157,7 @@ async function datos() {
   if (lastfind === undefined) {
     respuesta = await  fetch(
       "https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
-      JSON.stringify({ municipio_distrito: "Madrid-"+ "Centro"/*coordenadas*/})   
+      JSON.stringify({ municipio_distrito: "Madrid-"+ cooordenadas()})   
     )
     resultado = await respuesta.json()
      resultado = {datos : "API",...resultado}
@@ -167,18 +166,16 @@ async function datos() {
     resultado = lastfind;
     resultado ={datos : "biblioteca",...resultado}
   }
+}
    
   //console.log(resultado)
 
-  return resultado;
 
-  
-}
 
 ////////////////////////// MAPA /////////////////////////////////////////////////////////////
 function mapa() {
   L.tileLayer(
-    "https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png",
+    "https://{s}.tile.jawg.io/jawg-matrix/{z}/{x}/{y}{r}.png?access-token={accessToken}",
     {
       attribution:
         '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
@@ -212,7 +209,7 @@ async function Coordenadas (browserLat,browserLong){
   let data = await response.json();
     // console.log(data);
     // console.log(data.address.city_district);
-    return /* data.address.city_district*/ "Madrid-Centro"
+    return data.address.city_district
 }
 
 
@@ -333,4 +330,3 @@ function Grafico() {
 // });
 }
 mapa();
-
