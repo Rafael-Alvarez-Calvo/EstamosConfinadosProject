@@ -73,7 +73,7 @@ class Incidencia {
       ul3li11.innerText =
         "Cualquier otra actividad de análoga naturaleza, debidamente acreditada.";
       ul3li12.innerText =
-        "Quedarse en casa es mas barato. Por la HordAAAAAAAAAAAAAA";
+        "Quedarse en casa es mas barato.";
       confinamiento.appendChild(h1);
       confinamiento.appendChild(parrafo1);
       confinamiento.appendChild(parrafo2);
@@ -101,7 +101,7 @@ class Incidencia {
     }
   }
 }
-let prueba = new Incidencia("Madrid",600);
+// let prueba = new Incidencia("Madrid",600);
 
 
 //////////////////////////////////////////// FUNCIONES////////////////////////////////////
@@ -131,30 +131,33 @@ async function pintarGrafico() {
 
 
 };
-
 async function datos() {
- // console.log(dt);
-  let lastfind = localStorage.getItem("distrito")
-  let coordenadas = await Coordenadas(browserLat, browserLong)
- let resultado
-  coordenadas != lastfind ? resultado = lastfind : resultado = await  fetch(
+  // console.log(dt);
+   let lastfind =  localStorage.getItem("distrito") == null ? undefined : localStorage.getItem("distrito")
+   console.log(lastfind)
+   let coordenadas = await Coordenadas(browserLat, browserLong)
+   console.log(coordenadas)
+  let resultado
+   coordenadas == (lastfind.city == null || undefined ? "otra cosa" : lastfind.city) ? resultado = lastfind :
+   
+    resultado = await  fetch(
+     "https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
+       JSON.stringify({ municipio_distrito: "Madrid-"+ coordenadas()}) ,
+       console.log("la cagaste")
+   )
+     .then(resp => resp.json())
+     .then((data) => data)
+   //console.log(resultado)
+   return resultado;
+   
+ }
 
-    "https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
-      JSON.stringify({ municipio_distrito: "Madrid-"+ "Centro"/*coordenadas*/})  
-  )
-    .then(resp => resp.json())
-    .then((data) => data)
-  console.log(resultado)
 
-  return resultado;
-
-  
-}
 
 ////////////////////////// MAPA /////////////////////////////////////////////////////////////
 function mapa() {
   L.tileLayer(
-    "https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png",
+    "https://{s}.tile.jawg.io/jawg-matrix/{z}/{x}/{y}{r}.png?access-token={accessToken}",
     {
       attribution:
         '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
