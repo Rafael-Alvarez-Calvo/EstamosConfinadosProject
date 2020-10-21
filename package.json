@@ -1,0 +1,23 @@
+{
+  "name": "estamosconfinadosproject",
+  "version": "1.0.0",
+  "description": "App que localiza tu ubicación y si el municipio donde te encuentras está o no confinado. También se muestra una grafica TIA(Tasa de Incidencia Acumulada) de los últimos 14 días.",
+  "main": "main.js",
+  "dependencies": {},
+  "devDependencies": {
+    "cypress": "^5.4.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zurdako/EstamosConfinadosProject.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zurdako/EstamosConfinadosProject/issues"
+  },
+  "homepage": "https://github.com/Zurdako/EstamosConfinadosProject#readme"
+}

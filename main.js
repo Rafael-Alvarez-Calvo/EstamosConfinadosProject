@@ -148,34 +148,35 @@ async function pintarGrafico() {
 async function datos() {
  //console.log(localStorage.getItem("distrito"));
  
-  let lastfind =  JSON.parse(localStorage.getItem("distrito")) === null ? undefined : JSON.parse(localStorage.getItem("distrito"))
-  console.log(lastfind)
-  let coordenadas = await Coordenadas(browserLat, browserLong)
-  console.log(coordenadas)
- let resultado
- let respuesta
+let lastfind =  JSON.parse(localStorage.getItem("distrito")) === null ? undefined : JSON.parse(localStorage.getItem("distrito"))
+console.log(lastfind)
+let coordenadas = await Coordenadas(browserLat, browserLong)
+console.log(coordenadas)
+let resultado
+let respuesta
   // coordenadas == (lastfind.city == null || undefined) ? "otra cosa" : lastfind.city ? resultado = lastfind :
   if (lastfind === undefined) {
+
     respuesta = await  fetch(
       "https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
-      JSON.stringify({ municipio_distrito: "Madrid-"+ "Centro"/*coordenadas*/})   
+       JSON.stringify({ municipio_distrito: "Madrid-"+ "Centro"/*coordenadas*/})   
     )
     resultado = await respuesta.json()
-     resultado = {datos : "API",...resultado}
+    resultado = {datos : "API",...resultado}
     console.log("la cagaste")
+
   }else{
+
     resultado = lastfind;
     resultado ={datos : "biblioteca",...resultado}
+
   }
-   
   //console.log(resultado)
-
   return resultado;
-
-  
 }
 
 ////////////////////////// MAPA /////////////////////////////////////////////////////////////
+
 function mapa() {
   L.tileLayer(
     "https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png",
@@ -224,8 +225,6 @@ function Grafico() {
  
   //console.log(dateString)
  
-
-  
   let dataChart = {
     labels: dateString.reverse(),
     series: [].reverse(),
