@@ -23,11 +23,12 @@ class Incidencia {
   // funcion para saber si se esta confinado o no
   confinado(Tia) {
     let h1 = document.createElement("h1");
-    if (Tia >= 100 || null) {
+    if (Tia >= 500 || null) {
       h1.innerText = "SI";
 
       let parrafo1 = document.createElement("section");
       let parrafo2 = document.createElement("section");
+     
       let p1 = document.createElement("p");
       let p2 = document.createElement("p");
       let p3 = document.createElement("p");
@@ -93,10 +94,11 @@ class Incidencia {
       ul3.appendChild(ul3li12);
       parrafo2.appendChild(p3);
     } else {
-      p.innerText = "NO";
+      let h1 = document.createElement("h1");
+      h1.innerText = "NO";
       let palabraDelSeñor = document.createElement("p");
       palabraDelSeñor.innerText = "Asique divierte pero con precaucion";
-      confinamiento.appendChild(p);
+      confinamiento.appendChild(h1);
       confinamiento.appendChild(palabraDelSeñor);
     }
   }
@@ -105,16 +107,12 @@ let prueba = new Incidencia("Madrid",600);
 
 
 //////////////////////////////////////////// FUNCIONES////////////////////////////////////
-const guardar = {
-  set: (key, value) => localStorage[key] = JSON.stringify(value),
-  get: key => JSON.parse(localStorage[key])
-}
 async function pintarGrafico() {
   let apiResponse = await datos(); //Espera el envio de los datos de los datos api (fetch)
   //console.log(apiResponse);
   // console.log(apiResponse.result.records);
   // if (apiResponse.result.records.length)
-  prueba.city = apiResponse.result.records[0].municipio_distrito
+  if(apiResponse.datos === "API"){
   prueba.Tia = apiResponse.result.records[0].casos_confirmados_activos_ultimos_14dias === null ? 600 : apiResponse.result.records[0].casos_confirmados_activos_ultimos_14dias
   apiResponse.result.records.map((record) => {
     prueba.pushCasos({
@@ -122,12 +120,24 @@ async function pintarGrafico() {
       Ncaso: record.casos_confirmados_ultimos_14dias,
       fecha: record.fecha_informe.split("T")[0],
     }); 
-    guardar.set("prueba",prueba)
+    let coords = localStorage.getItem("distrito")
+      coords = prueba;
+      localStorage.setItem("distrito",JSON.stringify(coords));  
+    })
+    Grafico()
+    }else{
+      prueba.Tia = apiResponse.Tia
+      apiResponse.casos.map((caso) => {
+        prueba.pushCasos({
+          city: caso.city,
+          Ncaso: caso.Ncaso,
+          fecha: caso.fecha,
+          }
+        );
+      });
+    Grafico()
+    }
     
-     Grafico()
-    
-  });
-  
   prueba.confinado(prueba.Tia)
   //console.log(apiResponse)
   //console.log(prueba.casos)
@@ -136,23 +146,28 @@ async function pintarGrafico() {
 };
 
 async function datos() {
- // console.log(dt);
-  let lastfind =  localStorage.getItem("prueba")
+ //console.log(localStorage.getItem("distrito"));
+ 
+  let lastfind =  JSON.parse(localStorage.getItem("distrito")) === null ? undefined : JSON.parse(localStorage.getItem("distrito"))
   console.log(lastfind)
   let coordenadas = await Coordenadas(browserLat, browserLong)
   console.log(coordenadas)
  let resultado
-  guardar.get("prueba") != null ? 
-  coordenadas == lastfind.city ? resultado = lastfind :
-  
-   resultado = await  fetch(
-
-    "https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
-      JSON.stringify({ municipio_distrito: "Madrid-"+ "Centro"/*coordenadas*/}) ,
-      console.log("la cagaste")
-  )
-    .then(resp => resp.json())
-    .then((data) => data) : resultado = lastfind
+ let respuesta
+  // coordenadas == (lastfind.city == null || undefined) ? "otra cosa" : lastfind.city ? resultado = lastfind :
+  if (lastfind === undefined) {
+    respuesta = await  fetch(
+      "https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
+      JSON.stringify({ municipio_distrito: "Madrid-"+ "Centro"/*coordenadas*/})   
+    )
+    resultado = await respuesta.json()
+     resultado = {datos : "API",...resultado}
+    console.log("la cagaste")
+  }else{
+    resultado = lastfind;
+    resultado ={datos : "biblioteca",...resultado}
+  }
+   
   //console.log(resultado)
 
   return resultado;
