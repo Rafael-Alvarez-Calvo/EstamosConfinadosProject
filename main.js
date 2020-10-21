@@ -103,7 +103,7 @@ class Incidencia {
     }
   }
 }
-let prueba = new Incidencia("Madrid",600);
+// let prueba = new Incidencia("Madrid",600);
 
 
 //////////////////////////////////////////// FUNCIONES////////////////////////////////////
@@ -144,7 +144,6 @@ async function pintarGrafico() {
 
 
 };
-
 async function datos() {
  //console.log(localStorage.getItem("distrito"));
   
@@ -168,13 +167,11 @@ async function datos() {
     resultado = lastfind;
     resultado ={datos : "biblioteca",...resultado}
   }
+}
    
   //console.log(resultado)
 
-  return resultado;
 
-  
-}
 
 ////////////////////////// MAPA /////////////////////////////////////////////////////////////
 function mapa() {
@@ -334,4 +331,3 @@ function Grafico() {
 // });
 }
 mapa();
-
