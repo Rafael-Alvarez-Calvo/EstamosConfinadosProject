@@ -103,7 +103,7 @@ class Incidencia {
     }
   }
 }
-let prueba = new Incidencia("Madrid",600);
+// let prueba = new Incidencia("Madrid",600);
 
 
 //////////////////////////////////////////// FUNCIONES////////////////////////////////////
@@ -144,21 +144,23 @@ async function pintarGrafico() {
 
 
 };
-
 async function datos() {
  //console.log(localStorage.getItem("distrito"));
- 
+  
   let lastfind =  JSON.parse(localStorage.getItem("distrito")) === null ? undefined : JSON.parse(localStorage.getItem("distrito"))
+
   console.log(lastfind)
   let coordenadas = await Coordenadas(browserLat, browserLong)
   console.log(coordenadas)
  let resultado
  let respuesta
   // coordenadas == (lastfind.city == null || undefined) ? "otra cosa" : lastfind.city ? resultado = lastfind :
-  if (lastfind === undefined) {
+  if ((lastfind === undefined)  ) {
     respuesta = await  fetch(
       "https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
-      JSON.stringify({ municipio_distrito: "Madrid-"+ await Coordenadas(browserLat, browserLong)})   
+
+      JSON.stringify({ municipio_distrito: "Madrid-"+ Coordenadas()})   
+
     )
     resultado = await respuesta.json()
      resultado = {datos : "API",...resultado}
@@ -167,13 +169,11 @@ async function datos() {
     resultado = lastfind;
     resultado ={datos : "biblioteca",...resultado}
   }
+}
    
   //console.log(resultado)
 
-  return resultado;
 
-  
-}
 
 ////////////////////////// MAPA /////////////////////////////////////////////////////////////
 function mapa() {
@@ -210,8 +210,9 @@ async function Coordenadas (browserLat,browserLong){
   //console.log(browserLat, browserLong);
   let response = await fetch (`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${browserLat}&lon=${browserLong}`)
   let data = await response.json();
-    // console.log(data);
-    // console.log(data.address.city_district);
+
+
+    
     return data.address.city_district
 }
 
@@ -227,8 +228,8 @@ function Grafico() {
 
   
   let dataChart = {
-    labels: dateString.reverse(),
-    series: [].reverse(),
+    labels: dateString,
+    series: [],
   };
   // console.log(dataChart.labels);
   dataChart.series.push(prueba.casos.map((caso) => caso.Ncaso));
@@ -333,4 +334,3 @@ function Grafico() {
 // });
 }
 mapa();
-

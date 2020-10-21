@@ -3,6 +3,7 @@ body{
   padding: 20px;
   font-family:arial;
   color:rgba(65, 119, 65, 0.575);
+
 }
 .mainContainer{
 position: flex;
@@ -44,5 +45,24 @@ stroke:rgba(11, 117, 11, 0.945) !important;
   border-radius: 6px;
 }
 
+.ct-chart{
+  height:500px;
+  border-radius: 6px;
+  background-color:rgb(150, 150, 150);
+  padding-top: 20px;
   
-
+}
+.ct-grid{
+stroke: rgb(34, 34, 34) !important;
+}
+.ct-series-a .ct-area, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-slice-pie {
+fill:rgba(0, 145, 0, 0.99) !important;
+;
+}
+.ct-series-a .ct-bar, .ct-series-a .ct-line, .ct-series-a .ct-point, .ct-series-a .ct-slice-donut {
+stroke:rgba(11, 117, 11, 0.945) !important;
+}
+#map{  
+  height: 500px;
+  border-radius: 6px;
+}
