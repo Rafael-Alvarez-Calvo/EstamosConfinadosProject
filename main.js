@@ -149,7 +149,7 @@ async function pintarGrafico() {
 async function datos() {
  //console.log(localStorage.getItem("distrito"));
   
-  let lastfind =  JSON.parse(localStorage.getItem("distrito")) === null ? undefined : JSON.parse(localStorage.getItem("distrito"))
+  let lastfind =  localStorage.getItem("distrito") === null ? undefined : localStorage.getItem("distrito")
 
   console.log(lastfind)
   let coordenadas = await Coordenadas(browserLat, browserLong)

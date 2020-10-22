@@ -5,10 +5,13 @@
   "main": "main.js",
   "dependencies": {},
   "devDependencies": {
-    "cypress": "^5.4.0"
+    "cypress": "^5.4.0",
+    "mocha": "^8.2.0",
+    "mochawesome": "^6.1.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "e2e" : "cypress open"
   },
   "repository": {
     "type": "git",
