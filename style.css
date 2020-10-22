@@ -1,9 +1,9 @@
-
 body{
   background-color: #222;
   padding: 20px;
   font-family:arial;
   color:rgba(65, 119, 65, 0.575);
+
 }
 .mainContainer{
 position: flex;
@@ -11,6 +11,18 @@ align-items: center;
 align-content: center;
 margin-left: 50px;
 margin-right: 50px;
+margin-top: 20px;
+}
+h2{
+text-align: center;
+font-size: 25px;
+padding: 10px;
+color:rgba(55, 167, 55, 0.575);
+background-color:rgb(53, 53, 53);
+border: solid rgb(1, 75, 1) 2px;
+border-radius: 6px;
+margin-top: 20px;
+margin-bottom: 20px;
 }
 h1{
 text-align: center;
@@ -21,6 +33,28 @@ border: solid rgb(1, 75, 1) 2px;
 border-radius: 6px;
 margin-top: 20px;
 margin-bottom: 20px;
+}
+
+.ct-chart{
+  height:500px;
+  border-radius: 6px;
+  background-color:rgb(150, 150, 150);
+  padding-top: 20px;
+  
+}
+.ct-grid{
+stroke: rgb(34, 34, 34) !important;
+}
+.ct-series-a .ct-area, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-slice-pie {
+fill:rgba(0, 145, 0, 0.99) !important;
+;
+}
+.ct-series-a .ct-bar, .ct-series-a .ct-line, .ct-series-a .ct-point, .ct-series-a .ct-slice-donut {
+stroke:rgba(9, 92, 9, 0.945) !important;
+}
+#map{  
+  height: 500px;
+  border-radius: 6px;
 }
 
 .ct-chart{

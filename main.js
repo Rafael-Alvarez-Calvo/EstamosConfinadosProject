@@ -160,7 +160,9 @@ async function datos() {
   if ((lastfind === undefined)  ) {
     respuesta = await  fetch(
       "https://apifetcher.herokuapp.com/?id=f22c3f43-c5d0-41a4-96dc-719214d56968&filters=" +
+
     JSON.stringify({ municipio_distrito: "Madrid-"+ await Coordenadas(browserLat,browserLong)})   
+
     )
     resultado = await respuesta.json()
     resultado = {datos : "API",...resultado}
